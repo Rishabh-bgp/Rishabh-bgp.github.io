@@ -117,7 +117,7 @@
       'ls preprints':function(){return PUBS.filter(function(p){return p.cat==='preprint'}).map(function(p){return '<span class=g>▸</span> ['+p.venue+'] '+p.title+(p.doi?' · <a href="https://doi.org/'+p.doi+'" target="_blank" rel="noopener">doi:'+p.doi+'</a>':'')}).join('<br>')},
       'stack --ai':function(){return 'agentic coding stack (personal ratings):<br>Codex ★★★★★ · Claude Code ★★★★★ · Cursor ★★★★★ · Devin ★★★★★ · Google Antigravity ★★★★★<br>ml: PyTorch · scikit-learn · XGBoost · LightGBM · PennyLane · SHAP · LIME · fairlearn · FastAPI · Docker · n8n'},
       education:function(){return 'M.Tech AI &amp; DS · IIIT Bhagalpur · 2025–2027 · CGPA 7.86 (prov.)<br>M.Des UX · DIT University · 2023–2025 · CGPA 8.92<br>B.Tech CSE · MATS University · 2019–2023 · CGPA 8.05<br>Diploma CSE · Himalayan Garhwal University · 2017–2020 · 75.08%<br>Class 10 · 2017 · 93%, Distinction'},
-      contact:function(){return 'email ... <a href="mailto:rishabharyan887@gmail.com">rishabharyan887@gmail.com</a><br>orcid ... <a href="https://orcid.org/'+ORCID+'" target="_blank" rel="noopener">'+ORCID+'</a><br>github .. <a href="https://github.com/Rishabh-bgp" target="_blank" rel="noopener">github.com/Rishabh-bgp</a><br>linkedin <a href="https://www.linkedin.com/in/rishabh-aryan-52bb07287" target="_blank" rel="noopener">rishabh-aryan-52bb07287</a>'},
+      contact:function(){return 'email ... <a href="mailto:rishabharyan887@gmail.com">rishabharyan887@gmail.com</a><br>email2 .. <a href="mailto:rishabharyan080@gmail.com">rishabharyan080@gmail.com</a><br>orcid ... <a href="https://orcid.org/'+ORCID+'" target="_blank" rel="noopener">'+ORCID+'</a><br>github .. <a href="https://github.com/Rishabh-bgp" target="_blank" rel="noopener">github.com/Rishabh-bgp</a><br>linkedin <a href="https://www.linkedin.com/in/rishabh-aryan-52bb07287" target="_blank" rel="noopener">rishabh-aryan-52bb07287</a><br>whatsapp <a href="https://wa.me/919709621495" target="_blank" rel="noopener noreferrer">+91 97096 21495</a>'},
       theme:function(){return 'theme → '+toggleTheme()},
       clear:function(){term.innerHTML='';return null}
     };
@@ -143,6 +143,14 @@
     ENTRIES.push({g:'Action',t:'Toggle light / dark theme',k:'theme',run:toggleTheme});
     ENTRIES.push({g:'Action',t:'Print / Save academic CV (PDF)',k:'print pdf',run:function(){setTimeout(function(){window.print()},60)}});
     ENTRIES.push({g:'Action',t:'Copy ORCID iD ('+ORCID+')',k:'orcid copy',run:function(){copy('https://orcid.org/'+ORCID,'ORCID iD copied')}});
+    function openExt(u){var w=window.open(u,'_blank','noopener,noreferrer');if(w)w.opener=null}
+    ENTRIES.push({g:'Contact',t:'WhatsApp (+91 97096 21495)',k:'whatsapp contact phone message chat',run:function(){openExt('https://wa.me/919709621495')}});
+    ENTRIES.push({g:'Contact',t:'Email (rishabharyan887@gmail.com)',k:'email mail contact',run:function(){location.href='mailto:rishabharyan887@gmail.com'}});
+    ENTRIES.push({g:'Contact',t:'Email (rishabharyan080@gmail.com)',k:'email mail contact alt alternate second',run:function(){location.href='mailto:rishabharyan080@gmail.com'}});
+    ENTRIES.push({g:'Action',t:'Copy email addresses',k:'copy email mail contact',run:function(){copy('rishabharyan887@gmail.com, rishabharyan080@gmail.com','Email addresses copied')}});
+    ENTRIES.push({g:'Action',t:'Copy WhatsApp number (+91 97096 21495)',k:'copy whatsapp phone number',run:function(){copy('+91 97096 21495','WhatsApp number copied')}});
+    ENTRIES.push({g:'Contact',t:'LinkedIn profile',k:'linkedin contact',run:function(){openExt('https://www.linkedin.com/in/rishabh-aryan-52bb07287')}});
+    ENTRIES.push({g:'Contact',t:'GitHub profile',k:'github code contact',run:function(){openExt('https://github.com/Rishabh-bgp')}});
     ENTRIES.push({g:'Action',t:'Switch 3D mode (next)',k:'3d mode globe lattice bloch eeg',run:function(){if(window.RA3D){var m=window.RA3D.nextMode();toast('> 3D mode: '+window.RA3D.labels[m]);go('top')}}});
     ENTRIES.push({g:'Action',t:'Open tactical terminal',k:'terminal console shell',run:function(){go('console');setTimeout(function(){tin.focus({preventScroll:true})},400)}});
     ENTRIES.push({g:'Action',t:'Show lead-author works only',k:'lead first author filter',run:function(){S={cat:'all',lead:true,year:'all',topic:null,q:''};q.value='';apply();go('publications')}});
