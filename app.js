@@ -110,7 +110,7 @@
     var STATS=JSON.parse($('#statdata').textContent);
     function line(html,cls){var d=document.createElement('div');d.className='tline '+(cls||'');d.innerHTML=html;term.appendChild(d);term.scrollTop=term.scrollHeight}
     var CMDS={
-      help:function(){return 'commands: <b>whoami</b> · <b>stats --all</b> · <b>ls patents</b> · <b>ls preprints</b> · <b>stack --ai</b> · <b>education</b> · <b>contact</b> · <b>mode [globe|lattice|bloch|eeg]</b> · <b>theme</b> · <b>goto &lt;section&gt;</b> · <b>clear</b>'},
+      help:function(){return 'commands: <b>whoami</b> · <b>stats --all</b> · <b>ls patents</b> · <b>ls preprints</b> · <b>stack --ai</b> · <b>education</b> · <b>contact</b> · <b>mode [globe|lattice|bloch|eeg|jet|tank|sub|ak]</b> · <b>fleet</b> · <b>action</b> · <b>audio [on|off|next|track &lt;name&gt;|vol 0-100]</b> · <b>theme</b> · <b>goto &lt;section&gt;</b> · <b>clear</b>'},
       whoami:function(){return '<b>Rishabh Aryan</b> — AI/ML Researcher &amp; R&amp;D Engineer<br>M.Tech (Artificial Intelligence and Data Science), Dept. of CSE, Indian Institute of Information Technology, Bhagalpur<br>focus: leakage-aware benchmarks · honest evaluation · reproducible research code<br>objective: faculty role in CSE / AI &amp; Data Science'},
       'stats --all':function(){return 'research outputs ...... <b>'+STATS.total+'</b><br>lead/first-author ..... <b>'+STATS.lead+'</b><br>papers/chapters/books . <b>'+STATS.paper+'</b><br>preprints ............. <b>'+STATS.preprint+'</b> (SSRN 2 · Zenodo 2)<br>patents &amp; copyright .. <b>'+STATS.patent+'</b><br>thesis implementations  <b>14</b><br>by year ............... '+STATS.years},
       'ls patents':function(){return PUBS.filter(function(p){return p.cat==='patent'}).map(function(p){return '<span class=g>▸</span> '+p.venue+' — '+p.title}).join('<br>')},
@@ -119,14 +119,24 @@
       education:function(){return 'M.Tech AI &amp; DS · IIIT Bhagalpur · 2025–2027 · CGPA 7.86 (prov.)<br>M.Des UX · DIT University · 2023–2025 · CGPA 8.92<br>B.Tech CSE · MATS University · 2019–2023 · CGPA 8.05<br>Diploma CSE · Himalayan Garhwal University · 2017–2020 · 75.08%<br>Class 10 · 2017 · 93%, Distinction'},
       contact:function(){return 'email ... <a href="mailto:rishabharyan887@gmail.com">rishabharyan887@gmail.com</a><br>email2 .. <a href="mailto:rishabharyan080@gmail.com">rishabharyan080@gmail.com</a><br>orcid ... <a href="https://orcid.org/'+ORCID+'" target="_blank" rel="noopener">'+ORCID+'</a><br>github .. <a href="https://github.com/Rishabh-bgp" target="_blank" rel="noopener">github.com/Rishabh-bgp</a><br>linkedin <a href="https://www.linkedin.com/in/rishabh-aryan-52bb07287" target="_blank" rel="noopener">rishabh-aryan-52bb07287</a><br>whatsapp <a href="https://wa.me/919709621495" target="_blank" rel="noopener noreferrer">+91 97096 21495</a>'},
       theme:function(){return 'theme → '+toggleTheme()},
+      fleet:function(){return 'fleet &amp; arsenal (interactive 3D, shaded meshes):<br><span class=g>▸</span> <b>jet</b> · MiG-21 / Su-27 interceptor · action: barrel roll<br><span class=g>▸</span> <b>tank</b> · T-72 / T-34 armour · action: rotate turret, target lock<br><span class=g>▸</span> <b>sub</b> · Typhoon / Akula submarine · action: sonar ping<br><span class=g>▸</span> <b>ak</b> · AK-47 · action: chamber round<br>usage: <b>mode jet</b> then <b>action</b>'},
+      action:function(){if(window.RA3D&&window.RA3D.fleet.indexOf(window.RA3D.getMode())>-1){window.RA3D.action();return 'executing → '+window.RA3D.labels[window.RA3D.getMode()]}return 'no unit deployed — try <b>mode tank</b>'},
       clear:function(){term.innerHTML='';return null}
     };
     function run(raw){var cmd=raw.trim().replace(/\s+/g,' ');if(!cmd)return;hist.push(cmd);hi=hist.length;line('<span class=p>ra-01@cv:~$</span> '+cmd.replace(/</g,'&lt;'),'cmd');
       var low=cmd.toLowerCase(),r;
       if(CMDS[low])r=CMDS[low]();
-      else if(/^mode\b/.test(low)){var m=low.split(' ')[1];if(window.RA3D&&window.RA3D.modes.indexOf(m)>-1){window.RA3D.setMode(m);r='3d mode → '+window.RA3D.labels[m]}else if(window.RA3D){r='3d mode → '+window.RA3D.labels[window.RA3D.nextMode()]}else r='3d engine offline'}
+      else if(/^mode\b/.test(low)){var m=low.split(' ')[1];m=({mig:'jet','mig-21':'jet','su-27':'jet',su27:'jet',interceptor:'jet','t-72':'tank',t72:'tank','t-34':'tank',armor:'tank',armour:'tank',typhoon:'sub',akula:'sub',submarine:'sub','ak-47':'ak',ak47:'ak',rifle:'ak'})[m]||m;if(window.RA3D&&window.RA3D.modes.indexOf(m)>-1){window.RA3D.setMode(m);r='3d mode → '+window.RA3D.labels[m]}else if(window.RA3D){r='3d mode → '+window.RA3D.labels[window.RA3D.nextMode()]}else r='3d engine offline'}
       else if(/^(goto|cd|open) /.test(low)){var id=low.split(' ')[1];if(document.getElementById(id)){go(id);r='navigating → #'+id}else r='unknown section. try: dossier, education, interests, research, flagship, publications, experience, conferences, skills'}
       else if(low==='ls'||low==='ls -a')r='dossier/ education/ interests/ research/ flagship/ publications/ experience/ conferences/ skills/ arsenal/';
+      else if(/^(audio|music)\b/.test(low)){var A=window.RAAudio,arg=low.split(' ').slice(1);if(!A||!A.supported)r='web audio unavailable in this browser';
+        else if(!arg.length)r='soundtrack: '+(A.isPlaying()?'<b>PLAYING</b>':'OFF')+' · track '+A.getTrack()+' · vol '+Math.round(A.getVolume()*100)+'% · tracks: '+A.tracks.join(' / ');
+        else if(arg[0]==='on'||arg[0]==='play'){A.play();r='♪ soundtrack ON → '+A.getTrack()}
+        else if(arg[0]==='off'||arg[0]==='stop'||arg[0]==='pause'){A.pause();r='♪ soundtrack OFF'}
+        else if(arg[0]==='next'){r='♪ track → '+A.next();if(!A.isPlaying())A.play()}
+        else if(arg[0]==='track'&&arg[1]){if(A.setTrack(arg.slice(1).join(' '))){if(!A.isPlaying())A.play();r='♪ track → '+A.getTrack()}else r='unknown track. try: march, sonar, air'}
+        else if((arg[0]==='vol'||arg[0]==='volume')&&!isNaN(+arg[1])){A.setVolume(+arg[1]/100);r='♪ volume → '+Math.round(A.getVolume()*100)+'%'}
+        else r='usage: audio [on|off|next|track march|sonar|air|vol 0-100]'}
       else if(low==='sudo hire')r='<span class=g>ACCESS GRANTED.</span> Dossier forwarded — see <b>contact</b>.';
       else r='command not found: '+cmd.replace(/</g,'&lt;')+' — type <b>help</b>';
       if(r!=null)line(r)}
@@ -152,6 +162,10 @@
     ENTRIES.push({g:'Contact',t:'LinkedIn profile',k:'linkedin contact',run:function(){openExt('https://www.linkedin.com/in/rishabh-aryan-52bb07287')}});
     ENTRIES.push({g:'Contact',t:'GitHub profile',k:'github code contact',run:function(){openExt('https://github.com/Rishabh-bgp')}});
     ENTRIES.push({g:'Action',t:'Switch 3D mode (next)',k:'3d mode globe lattice bloch eeg',run:function(){if(window.RA3D){var m=window.RA3D.nextMode();toast('> 3D mode: '+window.RA3D.labels[m]);go('top')}}});
+    [['jet','3D: MiG-21 / Su-27 interceptor','jet fighter mig su27 aircraft plane fleet'],['tank','3D: T-72 / T-34 main battle tank','tank armor armour t72 t34 fleet'],['sub','3D: Typhoon / Akula submarine','submarine sub typhoon akula sonar fleet'],['ak','3D: AK-47 arsenal','ak47 ak-47 rifle arsenal kalashnikov']].forEach(function(u){ENTRIES.push({g:'Fleet',t:u[1],k:u[2]+' 3d mode',run:function(){if(window.RA3D){window.RA3D.setMode(u[0]);go('theatre')}}})});
+    ENTRIES.push({g:'Audio',t:'Play / pause soundtrack',k:'audio music sound soundtrack play pause toggle',run:function(){if(window.RAAudio){var on=window.RAAudio.toggle();toast('♪ soundtrack '+(on?'ON → '+window.RAAudio.getTrack():'OFF'))}}});
+    ENTRIES.push({g:'Audio',t:'Next soundtrack track',k:'audio music next track',run:function(){if(window.RAAudio){var n=window.RAAudio.next();if(!window.RAAudio.isPlaying())window.RAAudio.play();toast('♪ track → '+n)}}});
+    ['RED MARCH','SONAR DEPTH','AIRSPACE'].forEach(function(n,i){ENTRIES.push({g:'Audio',t:'Track: '+n,k:'audio music track '+n.toLowerCase(),run:function(){if(window.RAAudio){window.RAAudio.setTrack(i);if(!window.RAAudio.isPlaying())window.RAAudio.play();toast('♪ track → '+n)}}})});
     ENTRIES.push({g:'Action',t:'Open tactical terminal',k:'terminal console shell',run:function(){go('console');setTimeout(function(){tin.focus({preventScroll:true})},400)}});
     ENTRIES.push({g:'Action',t:'Show lead-author works only',k:'lead first author filter',run:function(){S={cat:'all',lead:true,year:'all',topic:null,q:''};q.value='';apply();go('publications')}});
     $$('[data-pal-degree]').forEach(function(d){ENTRIES.push({g:'Degree',t:d.getAttribute('data-pal-degree'),k:'education degree',run:function(){go('education');d.classList.add('flash');setTimeout(function(){d.classList.remove('flash')},1600)}})});

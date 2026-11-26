@@ -6,6 +6,8 @@ Source for the academic CV website of **Rishabh Aryan**: AI/ML researcher, M.Tec
 
 - Static HTML, CSS and vanilla JavaScript served by GitHub Pages from `main`: no build step, no frameworks, no CDN (fonts are self-hosted in `assets/fonts/`).
 - **Interactive 3D research theatre** (`engine3d.js`, pure Canvas 2D projection): drag-to-orbit with inertia, pinch / Ctrl+wheel / ± zoom, keyboard control, and four modes: Radar Globe, Neural Lattice (animated signal pulses), Quantum Bloch (precessing state vector with trail) and EEG Wave 3D. Six clickable research nodes filter the publications archive. A perspective tactical grid and particle field sits behind the hero with pointer parallax.
+- **Fleet & Arsenal 3D models** in the same engine: flat-shaded, depth-sorted meshes of a MiG-21 / Su-27 interceptor (twin fins, afterburner rings, contrails, barrel roll), a T-72 / T-34 main battle tank (rotating turret, animated tracks, reactive armour, radar target lock), a Typhoon / Akula submarine (double hull, spinning shrouded propellers, 3D sonar rings) and an AK-47 (chamber-round action), each with clickable telemetry hotspots and a live HUD readout. A Fleet & Arsenal strip with vector unit badges and a radar-horizon patrol band switches between them.
+- **Procedural soundtrack** (`audio.js`, Web Audio API, no audio files): three original tracks (RED MARCH, SONAR DEPTH, AIRSPACE) with a header play/pause, track switcher, volume control and live equaliser; it starts off and only plays after a click. Also available as `audio` in the terminal and in the command palette.
 - 3D tilt with holographic sheen on the portrait, KPI tiles and tool cards, and a 3D flip showcase of eight flagship research pillars.
 - Publications archive (58 entries, 47 lead-author): clickable year / category / authorship / theme analytics that cross-filter the list, category pills, a lead-author toggle, year filter, keyword search, and one-click citation and BibTeX copy on every entry.
 - Command palette (Ctrl/⌘+K) for fuzzy search across sections, degrees, publications, patents and quick actions; tactical terminal console (`whoami`, `stats --all`, `ls patents`, `stack --ai`, `contact`, …).
@@ -21,7 +23,8 @@ Source for the academic CV website of **Rishabh Aryan**: AI/ML researcher, M.Tec
 | `index.html` | The CV page (content and structured data) |
 | `style.css` | Theme, responsive layout and print stylesheet |
 | `app.js` | Theme, HUD, reveal, publications engine, citations, command palette, terminal, flip cards |
-| `engine3d.js` | Self-contained 3D engine (four modes), background field and tilt effects |
+| `engine3d.js` | Self-contained 3D engine (4 research modes + 4 fleet/arsenal models), patrol band, background field and tilt effects |
+| `audio.js` | Procedural Web Audio soundtrack and interface sound effects |
 | `assets/` | Portrait, favicon, self-hosted fonts and agentic-tool logos |
 
 ## Other repositories by Rishabh Aryan
