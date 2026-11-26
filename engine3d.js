@@ -21,7 +21,7 @@
   ];
   NODES.forEach(function(n){var la=n.lat*Math.PI/180,lo=n.lon*Math.PI/180,r=1.18;n.p=[Math.cos(la)*Math.sin(lo)*r,Math.sin(la)*r,Math.cos(la)*Math.cos(lo)*r]});
   var MODES=['globe','lattice','bloch','eeg','jet','tank','sub','ak','bear'];
-  var MODE_LABEL={globe:'RADAR GLOBE',lattice:'NEURAL LATTICE',bloch:'QUANTUM BLOCH',eeg:'EEG WAVE 3D',jet:'MIG-21 / SU-27 INTERCEPTOR',tank:'T-72 / T-34 ARMOR',sub:'TYPHOON / AKULA SUB',bear:'URSA // SOVIET BEAR',ak:'AK-47 ARSENAL'};
+  var MODE_LABEL={globe:'RADAR GLOBE',lattice:'NEURAL LATTICE',bloch:'QUANTUM BLOCH',eeg:'EEG WAVE 3D',jet:'MIG-21 / SU-27 INTERCEPTOR',tank:'T-72 / T-34 ARMOR',sub:'TYPHOON / AKULA SUB',bear:'URSA // RED BEAR',ak:'AK-47 ARSENAL'};
 
   /* ---------- showcase ---------- */
   function Showcase(cv){
