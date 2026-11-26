@@ -20,13 +20,13 @@
     {id:'ip',label:'Patents & IP',sub:'5 Indian patents · 1 copyright registration',col:'olive',lat:-62,lon:-30}
   ];
   NODES.forEach(function(n){var la=n.lat*Math.PI/180,lo=n.lon*Math.PI/180,r=1.18;n.p=[Math.cos(la)*Math.sin(lo)*r,Math.sin(la)*r,Math.cos(la)*Math.cos(lo)*r]});
-  var MODES=['globe','lattice','bloch','eeg','jet','tank','sub','ak'];
-  var MODE_LABEL={globe:'RADAR GLOBE',lattice:'NEURAL LATTICE',bloch:'QUANTUM BLOCH',eeg:'EEG WAVE 3D',jet:'MIG-21 / SU-27 INTERCEPTOR',tank:'T-72 / T-34 ARMOR',sub:'TYPHOON / AKULA SUB',ak:'AK-47 ARSENAL'};
+  var MODES=['globe','lattice','bloch','eeg','jet','tank','sub','ak','bear'];
+  var MODE_LABEL={globe:'RADAR GLOBE',lattice:'NEURAL LATTICE',bloch:'QUANTUM BLOCH',eeg:'EEG WAVE 3D',jet:'MIG-21 / SU-27 INTERCEPTOR',tank:'T-72 / T-34 ARMOR',sub:'TYPHOON / AKULA SUB',bear:'URSA // SOVIET BEAR',ak:'AK-47 ARSENAL'};
 
   /* ---------- showcase ---------- */
   function Showcase(cv){
     var ctx=cv.getContext('2d'),W=1,H=1,dpr=Math.min(window.devicePixelRatio||1,2);
-    var VIEW={globe:[.6,.32],lattice:[.55,.28],bloch:[.6,.3],eeg:[.42,.5],jet:[.75,-.34],tank:[.72,-.36],sub:[.78,-.26],ak:[.3,-.14]},OSC={lattice:1,eeg:1,ak:1};
+    var VIEW={globe:[.6,.32],lattice:[.55,.28],bloch:[.6,.3],eeg:[.42,.5],jet:[.75,-.34],tank:[.72,-.36],sub:[.78,-.26],ak:[.3,-.14],bear:[.62,-.24]},OSC={lattice:1,eeg:1,ak:1};
     var st={lastDrag:-99,mode:'globe',yaw:.6,pitch:.32,vy:0,vp:0,zoom:1,tz:1,drag:false,t:0,hover:null,visible:true};
     var panel=cv.closest('.sc-panel'), tip=panel.querySelector('.sc-tip'), ro=panel.querySelector('.sc-readout');
     function size(){var r=cv.getBoundingClientRect();W=Math.max(1,r.width);H=Math.max(1,r.height);cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
@@ -112,7 +112,7 @@
     function matRGB(mm){var L=PAL.light;switch(mm){
       case 'hull':return L?[96,112,48]:[124,142,70];case 'hull2':return L?[74,86,38]:[92,106,52];case 'dark':return L?[60,62,58]:[52,54,50];
       case 'metal':return L?[120,126,130]:[132,138,142];case 'gun':return L?[78,82,86]:[88,92,96];case 'glass':var g=rgbOf('cyan');return [g[0]*.8,g[1]*.8,g[2]*.8];
-      case 'accent':return rgbOf('red');case 'era':return L?[124,52,44]:[122,48,40];case 'glow':return rgbOf('yellow');case 'wood':return [156,88,40];case 'brass':return [210,164,72];default:return [128,128,128]}}
+      case 'accent':return rgbOf('red');case 'era':return L?[124,52,44]:[122,48,40];case 'glow':return rgbOf('yellow');case 'wood':return [156,88,40];case 'brass':return [210,164,72];case 'fur':return L?[98,66,42]:[116,80,52];case 'fur2':return L?[150,112,76]:[160,122,84];case 'cap':return L?[66,70,58]:[74,78,64];case 'eye':return rgbOf('red');default:return [128,128,128]}}
     function drawParts(parts){var faces=[];
       parts.forEach(function(pt){var T=pt.T,m=pt.m,vv=new Array(m.v.length);for(var i=0;i<m.v.length;i++)vv[i]=V(T(m.v[i]));
         m.f.forEach(function(f){var n=f.i.length,cx=0,cy=0,cz=0,k;for(k=0;k<n;k++){var q=vv[f.i[k]];cx+=q[0];cy+=q[1];cz+=q[2]}cx/=n;cy/=n;cz/=n;
@@ -297,8 +297,8 @@
       [-1,1].forEach(function(s){star(gun,.075,function(u,v){return [-1.0+u,-.1+v,.058*s]},[0,0,s])});
       boxR(bolt,[.38,.07,.095],[.07,.035,.05],'metal');
       return {gun:gun,bolt:bolt,hs:[
-        {k:'MUZZLE // COBRATATE @ IIT JAMMU',d:'Esoteric programming language built in a 24-hour hackathon · IIT Jammu Summer School 2026',p:[1.78,.05,0],f:{go:'experience',l:'Experience'}},
-        {k:'GAS SYSTEM // AGENTIC STACK',d:'Codex · Claude Code · Cursor · Devin · Google Antigravity',p:[1.1,.14,0],f:{go:'tools',l:'Agentic AI stack'}},
+        {k:'MUZZLE // BOOK',d:'Author of “Introduction to AI and Machine Learning for Modern Systems”',p:[1.78,.05,0],f:{q:'introduction to ai and machine learning',l:'Book'}},
+        {k:'GAS SYSTEM // COPYRIGHT LD-34737/2026-CO',d:'Daoist Wu Wei & Ziran principles applied to a hybrid deep-learning model · Govt. of India Copyright Office',p:[1.1,.14,0],f:{q:'ld-34737',l:'Copyright'}},
         {k:'MAGAZINE // 58 ENTRIES · 47 LEAD',d:'Papers, chapters, preprints, patents & copyright · 47 lead/first-author works',p:[.42,-.62,0],f:{lead:true,l:'Lead-author works'}},
         {k:'RECEIVER // 5 PATENTS + 1 COPYRIGHT',d:'Indian patents and a Government of India copyright registration',p:[.38,.07,.1],part:'bolt',f:{t:'ip',l:'Patents & IP'}},
         {k:'STOCK // PATENT 20,262,107,892',d:'Hybrid Mechanical Waste-to-Energy Processing System',p:[-1.0,-.1,.06],f:{q:'waste-to-energy',l:'Waste-to-energy patent'}}]}})();
@@ -314,17 +314,59 @@
         var a1=PW(e.p),a2=PW([e.p[0]+.05*Math.cos(e.l*20),e.p[1]+.02,e.p[2]+.05*Math.sin(e.l*20)]);ctx.strokeStyle='rgba(210,164,72,'+Math.min(1,e.l*1.5)+')';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(a1[0],a1[1]);ctx.lineTo(a2[0],a2[1]);ctx.stroke()}
       return G}
 
+    /* ---------- URSA // Soviet war bear (low-poly, faceted) ---------- */
+    var BEAR=(function(){var body=M(),head=M(),legs=M();
+      lathe(body,[[-.82,0],[-.78,.2],[-.55,.36],[-.1,.42],[.35,.4],[.62,.32],[.74,0]],8,'x',[0,.06,0],[1,.92],'fur');
+      [[-.48,.44],[-.12,.47],[.24,.45]].forEach(function(b,i){boxR(body,[b[0],b[1],0],[.32,.07,.62],'hull',(i-1)*.08)});
+      boxR(body,[.06,.52,0],[.86,.04,.18],'hull2');
+      star(body,.1,function(u,v){return [-.12+u,.25+v,.391]},[0,0,1]);star(body,.1,function(u,v){return [-.12-u,.25+v,-.391]},[0,0,-1]);
+      lathe(body,[[.58,.33],[.6,.37],[.7,.37],[.72,.32]],10,'x',[0,.08,0],[1,1],'metal');
+      lathe(body,[[-.9,0],[-.86,.07],[-.78,.08]],6,'x',[0,.2,0],[1,1],'fur');
+      lathe(head,[[-.22,0],[-.18,.22],[0,.29],[.16,.26],[.26,.15]],8,'x',[.98,.42,0],[1,.95],'fur');
+      lathe(head,[[.22,.14],[.38,.12],[.48,.08],[.52,0]],8,'x',[.98,.36,0],[.9,1],'fur2');
+      boxR(head,[1.51,.4,0],[.05,.07,.11],'dark');boxR(head,[1.4,.28,0],[.1,.02,.13],'dark');
+      [-1,1].forEach(function(s){boxR(head,[1.21,.5,.11*s],[.03,.04,.045],'eye')});
+      lathe(head,[[.58,.3],[.78,.3],[.84,.24],[.87,0]],10,'y',[.95,0,0],[1,1],'cap');
+      lathe(head,[[.54,.34],[.64,.34],[.64,.31],[.54,.31]],10,'y',[.95,0,0],[1,1],'fur2');
+      [-1,1].forEach(function(s){boxR(head,[.92,.5,.32*s],[.2,.26,.05],'cap')});
+      boxR(head,[1.25,.66,0],[.05,.14,.34],'cap');
+      star(head,.07,function(u,v){return [1.277,.66+v,-u]},[1,0,0]);
+      [[.5,.24],[.5,-.24],[-.5,.24],[-.5,-.24]].forEach(function(L,i){lathe(legs,[[-.6,0],[-.6,.1],[-.52,.13],[-.05,.14],[.1,0]],6,'y',[L[0],0,L[1]],[1.1,1],'fur');
+        boxR(legs,[L[0]+.04,-.56,L[1]],[.24,.07,.2],'fur2');
+        if(i<2)[-.06,0,.06].forEach(function(dz){boxR(legs,[L[0]+.17,-.57,L[1]+dz],[.07,.03,.025],'metal',-.25)})});
+      return {body:body,head:head,legs:legs,hs:[
+        {k:'USHANKA COMMAND // AI ORCHESTRATOR',d:'Agentic AI coding stack: Codex · Claude Code · Cursor · Devin · Google Antigravity',p:[.95,.86,0],part:'head',f:{go:'tools',l:'Agentic AI coding stack'}},
+        {k:'ARMOR PLATING // 5-STAR AGENTIC STACK',d:'All five agentic coding tools personally rated 5/5 on this CV',p:[-.12,.52,0],f:{go:'tools',l:'Agentic AI coding stack'}},
+        {k:'CLAWS // RAPID PROTOTYPING & COBRATATE',d:'Cobratate: esoteric language + Python interpreter built in a 24-hour hackathon at IIT Jammu (v1.2, MIT)',p:[.67,-.57,.24],f:{go:'experience',l:'Experience'}},
+        {k:'RED STAR // MULTI-AGENT RESEARCH',d:'Multi-agent AI chief of staff for turbine fleets · wind-aware multi-agent UAV coordination · RAG-LLM frameworks',p:[-.12,.25,.4],f:{t:'u:bear'}},
+        {k:'ARMOR COLLAR // IIT JAMMU SUMMER SCHOOL',d:'Intern, AI (LLMs, GenAI, Automation & AI Agents) · 10 Jun – 10 Aug 2026',p:[.66,.45,0],f:{go:'experience',l:'Experience'}}]}})();
+    function bear(t){var B=VS.bear,sc=vscale()*.95,br=1+.018*Math.sin(t*1.6),hv=.02*Math.sin(t*.8);
+      var ra=0;if(B.r0!=null){var u=(t-B.r0)/1.4;if(u>=1)B.r0=null;else ra=Math.sin(PI*Math.min(1,u*1.6))}
+      var G=function(p){return [(p[0]-.2)*sc,(p[1]*br+.06)*sc+hv,p[2]*sc]};
+      var HT=function(p){var q=[p[0]-.8,p[1]-.4,p[2]];q=rz(q,.06*Math.sin(t*.7)+.32*ra);return G([q[0]+.8,q[1]+.4,q[2]])};B.T={head:HT};
+      var gy=-.62*sc+.06*sc;for(var gz=-1.4;gz<=1.4;gz+=.35)W3([[-2.4,gy,gz],[2.4,gy,gz]],'olive',.15,1);for(var gx=-2.4;gx<=2.4;gx+=.4)W3([[gx,gy,-1.4],[gx,gy,1.4]],'olive',.12,1);
+      for(var i=B.rings.length-1;i>=0;i--){var R0=B.rings[i],age=t-R0.t0;if(age<0)continue;var R=.3+age*2.1,al=Math.max(0,1-age/2.2);if(al<=0){B.rings.splice(i,1);continue}
+        var ring=[],ring2=[];for(var k=0;k<=48;k++){var a=k/48*PI*2;ring.push([Math.cos(a)*R,gy,Math.sin(a)*R]);ring2.push([Math.cos(a)*R*.7,gy+.02,Math.sin(a)*R*.7])}
+        W3(ring,'red',al*.2,6);W3(ring,'red',al*.9,1.8);W3(ring2,'yellow',al*.6,1.2)}
+      if(B.r0!=null)for(var s=0;s<5;s++){var a2=s/5*PI*2+t*.6,rr=.7+1.3*ra,p=PW([Math.cos(a2)*rr,.35+.15*Math.sin(t*3+s),Math.sin(a2)*rr]);ctx.fillStyle=c('cyan',.4+.5*ra);ctx.beginPath();ctx.arc(p[0],p[1],3,0,7);ctx.fill();
+        var hp=PW(HT([1.0,.6,0]));ctx.strokeStyle=c('cyan',.25*ra);ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(hp[0],hp[1]);ctx.lineTo(p[0],p[1]);ctx.stroke()}
+      drawParts([{m:BEAR.legs,T:G},{m:BEAR.body,T:G},{m:BEAR.head,T:HT}]);
+      if(B.r0!=null){var mp=PW(HT([1.5,.3,0]));ctx.font='700 12px "JetBrains Mono",monospace';ctx.fillStyle=c('red',ra);ctx.fillText('ROAR // DEPLOY SWARM',mp[0]+10,mp[1]-10)}
+      return G}
+
     var UNIT={jet:{d:'WIND & QUANTUM FORECASTING',s:'M.Tech thesis · 14 thesis repos · Indian SCADA & quantum hybrids'},tank:{d:'SCAM, THREAT & CONTROL DEFENSE',s:'SPAM//SCAN · cyber-threat & control patents · Responsible AI'},
-      sub:{d:'DEEP SIGNAL & BIOMEDICAL AI',s:'BEED EEG audit · brain tumour MRI · pan-cancer genomics · med-device patents'},ak:{d:'PATENTS, IP & AGENTIC STACK',s:'5 patents + 1 copyright · 47 lead works · agentic AI engineering'}};
+      sub:{d:'DEEP SIGNAL & BIOMEDICAL AI',s:'BEED EEG audit · brain tumour MRI · pan-cancer genomics · med-device patents'},ak:{d:'PATENTS, IP & PUBLICATIONS',s:'5 patents + 1 copyright · 58 entries · 47 lead works · 1 book'},
+      bear:{d:'AI ORCHESTRATOR & MULTI-AGENT SWARM',s:'Codex · Claude Code · Cursor · Devin · Google Antigravity (each rated 5/5) · Cobratate · multi-agent research'}};
     function ucount(m){return (window.RA_UNIT_COUNTS||{})['u:'+m]}
     function cvGo(f){document.dispatchEvent(new CustomEvent('ra:cv',{detail:f}));if(window.RAAudio)window.RAAudio.sfx('click')}
-    var VS={jet:{roll:0,r0:null},tank:{tur:0,aim:0,manualUntil:-1,locked:false},sub:{pings:[],last:-9,hitT:null},ak:{b0:null}};
-    var VEH={jet:{draw:jet,def:JET,act:'Barrel Roll'},tank:{draw:tank,def:TANK,act:'Rotate Turret'},sub:{draw:sub,def:SUB,act:'Sonar Ping'},ak:{draw:ak,def:AK,act:'Chamber Round'}};
+    var VS={jet:{roll:0,r0:null},tank:{tur:0,aim:0,manualUntil:-1,locked:false},sub:{pings:[],last:-9,hitT:null},ak:{b0:null},bear:{r0:null,rings:[],T:null}};
+    var VEH={jet:{draw:jet,def:JET,act:'Barrel Roll'},tank:{draw:tank,def:TANK,act:'Rotate Turret'},sub:{draw:sub,def:SUB,act:'Sonar Ping'},ak:{draw:ak,def:AK,act:'Chamber Round'},bear:{draw:bear,def:BEAR,act:'ROAR // DEPLOY SWARM'}};
     function vAction(){var m=st.mode,t=st.t,au=window.RAAudio;
       if(m==='jet'){if(VS.jet.r0==null)VS.jet.r0=t;if(au)au.sfx('whoosh')}
       else if(m==='tank'){VS.tank.manualUntil=t+6;VS.tank.aim=VS.tank.tur+PI/4;if(VS.tank.aim>1.4)VS.tank.aim-=2.4;if(au)au.sfx('servo')}
       else if(m==='sub'){VS.sub.pings.push({t0:t,big:true});if(au)au.sfx('ping')}
       else if(m==='ak'){if(VS.ak.b0==null){VS.ak.b0=t;var g=lastG||function(p){return p};casings.push({p:g([.3,.13,.07]),v:[.006,.03,.022],l:1})}if(au)au.sfx('bolt')}
+      else if(m==='bear'){if(VS.bear.r0==null)VS.bear.r0=t;VS.bear.rings.push({t0:t},{t0:t+.25});if(au)au.sfx('roar')}
       kick()}
     var lastG=null,HS=[],lock=null;
     function telemetry(t){var m=st.mode,hd=((st.yaw*57.3%360+360)%360).toFixed(0),L=[],n=ucount(m);
@@ -332,11 +374,12 @@
       else if(m==='tank')L=['HDG '+hd+'°','SPD '+(54+5*Math.sin(t*.5)).toFixed(0)+' KM/H','TURRET '+((VS.tank.tur*57.3+360)%360).toFixed(0)+'°','ARMOR ERA · '+(VS.tank.locked?'LOCKED':'SEARCH')];
       else if(m==='sub')L=['HDG '+hd+'°','DEPTH '+(380+14*Math.sin(t*.25)).toFixed(0)+' M','SPD '+(24+2*Math.sin(t*.3)).toFixed(1)+' KN','SONAR '+(VS.sub.hitT!=null&&t-VS.sub.hitT<1.6?'CONTACT':'ACTIVE')];
       else if(m==='ak')L=['CAL 7.62×39 MM','RATE 600 RPM','V0 715 M/S','MAG 30 RDS'];
+      else if(m==='bear')L=['AGENTS 5 · RATED 5/5',VS.bear.r0!=null?'SWARM DEPLOYED':'SWARM STANDBY'];
       L=[UNIT[m].d,'CV ENTRIES '+(n!=null?n:'—')].concat(L.slice(0,2));return L}
     function drawTele(L){var x=12,y=H-14-L.length*15;ctx.font='700 10.5px "JetBrains Mono",monospace';var w=0;L.forEach(function(s){w=Math.max(w,ctx.measureText(s).width)});
       ctx.fillStyle=PAL.light?'rgba(255,250,240,.78)':'rgba(10,10,10,.6)';ctx.fillRect(x-6,y-12,w+14,L.length*15+8);ctx.strokeStyle=c('red',.6);ctx.lineWidth=1;ctx.strokeRect(x-6,y-12,w+14,L.length*15+8);
       L.forEach(function(s,i){ctx.fillStyle=c(i?'ink':'red',.95);ctx.fillText(s,x,y+i*15)})}
-    function hotspots(t,G){var d=VEH[st.mode].def,T0=VEH[st.mode];HS=[];var parts=(st.mode==='tank'?VS.tank.T:st.mode==='ak'?VS.ak.T:null)||{};
+    function hotspots(t,G){var d=VEH[st.mode].def,T0=VEH[st.mode];HS=[];var parts=(st.mode==='tank'?VS.tank.T:st.mode==='ak'?VS.ak.T:st.mode==='bear'?VS.bear.T:null)||{};
       d.hs.forEach(function(h){var T=h.part&&parts[h.part]?parts[h.part]:G,p=PW(T(h.p));h.sx=p[0];h.sy=p[1];HS.push({h:h,sx:p[0],sy:p[1],sz:p[2]})});
       HS.forEach(function(o){var hov=st.hover===o.h,lk=lock&&lock.h===o.h&&t-lock.t<3,r=hov||lk?7:5,pulse=RM?0:(t*1.2+o.sx*.01)%1;
         ctx.strokeStyle=c(lk?'red':'yellow',.9*(1-pulse));ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(o.sx,o.sy,r+pulse*10,0,7);ctx.stroke();

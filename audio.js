@@ -43,6 +43,11 @@
     else if(name==='ping')ping(t,.5,sfxBus);
     else if(name==='whoosh'){var f=nz(t,.35,1.2,'bandpass',300,1.5,0,sfxBus);f.frequency.setValueAtTime(250,t);f.frequency.exponentialRampToValueAtTime(3200,t+.6);f.frequency.exponentialRampToValueAtTime(400,t+1.2)}
     else if(name==='servo'){var o=ctx.createOscillator(),g=ctx.createGain();o.type='sawtooth';o.frequency.setValueAtTime(90,t);o.frequency.linearRampToValueAtTime(140,t+.5);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.06,t+.05);g.gain.exponentialRampToValueAtTime(.0001,t+.7);o.connect(g);g.connect(sfxBus);o.start(t);o.stop(t+.75)}
+    else if(name==='roar'){var o=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain(),fl=ctx.createBiquadFilter();o.type='sawtooth';o2.type='square';o.frequency.setValueAtTime(70,t);o.frequency.linearRampToValueAtTime(120,t+.35);o.frequency.exponentialRampToValueAtTime(48,t+1.3);o2.frequency.setValueAtTime(73,t);o2.frequency.exponentialRampToValueAtTime(50,t+1.3);
+      fl.type='lowpass';fl.frequency.setValueAtTime(300,t);fl.frequency.linearRampToValueAtTime(900,t+.4);fl.frequency.exponentialRampToValueAtTime(200,t+1.3);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.45,t+.12);g.gain.exponentialRampToValueAtTime(.0001,t+1.4);
+      o.connect(fl);o2.connect(fl);fl.connect(g);g.connect(sfxBus);o.start(t);o2.start(t);o.stop(t+1.45);o2.stop(t+1.45);nz(t,.25,1.1,'bandpass',500,1.2,0,sfxBus);kick(t+.02,.5)}
+    else if(name==='boom'){nz(t,.6,.5,'lowpass',900,.8,0,sfxBus);var ob=ctx.createOscillator(),gb=ctx.createGain();ob.type='sine';ob.frequency.setValueAtTime(110,t);ob.frequency.exponentialRampToValueAtTime(38,t+.35);gb.gain.setValueAtTime(.5,t);gb.gain.exponentialRampToValueAtTime(.0001,t+.4);ob.connect(gb);gb.connect(sfxBus);ob.start(t);ob.stop(t+.42)}
+    else if(name==='blip'||name==='hit'||name==='bad'){var f0=name==='bad'?180:name==='hit'?1760:1320;synth(t,f0,name==='bad'?.18:.06,.16,{wave:name==='bad'?'sawtooth':'square',cut:2600,sus:.2,rel:.05,dest:sfxBus})}
     else if(name==='bolt'){nz(t,.5,.05,'highpass',2500,1,0,sfxBus);nz(t+.18,.6,.06,'bandpass',3200,2,0,sfxBus)}}
   // ---- YouTube IFrame Player ----
   function dock(){var d=document.getElementById('ytDock');if(!d){d=document.createElement('div');d.id='ytDock';d.className='yt-dock no-print';d.setAttribute('aria-hidden','true');
