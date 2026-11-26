@@ -12,13 +12,25 @@
   function copy(text,msg){function ok(){toast(msg)}
     if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(text).then(ok,fallback)}else fallback();
     function fallback(){var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(ta);ok()}}
-  function setTheme(n){root.setAttribute('data-theme',n);try{localStorage.setItem('ra-theme',n)}catch(e){}var b=$('#themeBtn');if(b){b.textContent=n==='dark'?'LT':'DK';b.setAttribute('aria-label',n==='dark'?'Switch to light theme':'Switch to dark theme')}}
+  function setTheme(n,noStore){root.setAttribute('data-theme',n);if(!noStore){try{localStorage.setItem('ra-theme',n)}catch(e){}}var b=$('#themeBtn');if(b){b.textContent=n==='dark'?'LT':'DK';b.setAttribute('aria-label',n==='dark'?'Switch to light theme':'Switch to dark theme')}}
+  function themePicked(){try{return !!localStorage.getItem('ra-theme')}catch(e){return false}}
+  function getView(){return root.getAttribute('data-view')==='academic'?'academic':'tactical'}
+  function setView(v,persist){v=v==='academic'?'academic':'tactical';root.setAttribute('data-view',v);
+    if(persist){try{localStorage.setItem('ra-view',v)}catch(e){}try{var u=new URL(location.href);u.searchParams.set('mode',v);if(/^#academic$/i.test(u.hash))u.hash='';history.replaceState(null,'',u.pathname+u.search+u.hash)}catch(e){}}
+    if(!themePicked())setTheme(v==='academic'?'light':'dark',true);
+    var b=document.getElementById('viewBtn');if(b){b.setAttribute('aria-pressed',v==='academic'?'true':'false');b.setAttribute('aria-label',v==='academic'?'Switch to Tactical view':'Switch to Academic view')}
+    if(v==='academic'){try{window.RAAudio&&window.RAAudio.pause()}catch(e){}try{window.RAGames&&window.RAGames.close()}catch(e){}}
+    document.dispatchEvent(new CustomEvent('ra:view',{detail:v}));return v}
+  function toggleView(){var v=setView(getView()==='academic'?'tactical':'academic',true);toast(v==='academic'?'Academic view':'> tactical view: online');if(v==='academic')window.scrollTo(0,0);return v}
+  window.RAView={set:function(v){return setView(v,true)},toggle:toggleView,get:getView};
   function toggleTheme(){var n=root.getAttribute('data-theme')==='dark'?'light':'dark';setTheme(n);toast('> theme: '+n);return n}
   function go(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:RM?'auto':'smooth',block:'start'})}
 
   document.addEventListener('DOMContentLoaded',function(){
-    setTheme(root.getAttribute('data-theme'));
+    setTheme(root.getAttribute('data-theme'),true);
     $('#themeBtn').addEventListener('click',toggleTheme);
+    var vb=$('#viewBtn');if(vb)vb.addEventListener('click',function(){toggleView()});
+    setView(getView(),false);
     $$('[data-print-cv]').forEach(function(b){b.addEventListener('click',function(){window.print()})});
     $$('[data-copy-orcid]').forEach(function(b){b.addEventListener('click',function(){copy('https://orcid.org/'+ORCID,'ORCID iD copied')})});
     var mb=$('#menuBtn'),nav=$('#nav');
@@ -92,6 +104,7 @@
     document.addEventListener('ra:cv',function(e){var f=e.detail||{};
       if(f.t){setTopic(f.t);return}
       if(f.go){go(f.go);toast('> jump: '+(f.l||f.go));return}
+      if(f.cat){S={cat:f.cat,lead:false,year:'all',topic:null,q:''};q.value='';apply();go('publications');toast((getView()==='academic'?'Filter: ':'> filter: ')+(f.l||f.cat));return}
       S={cat:'all',lead:!!f.lead,year:'all',topic:null,q:(f.q||'').toLowerCase()};q.value=f.q||'';apply();go('publications');toast('> filter: '+(f.l||f.q||'lead-author'))});
     $$('[data-topic-link]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();setTopic(a.dataset.topicLink)})});
     apply();
@@ -117,6 +130,9 @@
     var STATS=JSON.parse($('#statdata').textContent);
     function line(html,cls){var d=document.createElement('div');d.className='tline '+(cls||'');d.innerHTML=html;term.appendChild(d);term.scrollTop=term.scrollHeight}
     var CMDS={
+      academic:function(){setTimeout(function(){setView('academic',true);window.scrollTo(0,0)},400);return 'switching to <b>Academic view</b> …'},
+      'academic mode':function(){return CMDS.academic()},
+      tactical:function(){setView('tactical',true);return 'tactical view: online'},
       help:function(){return 'commands: <b>whoami</b> · <b>stats --all</b> · <b>ls patents</b> · <b>ls preprints</b> · <b>stack --ai</b> · <b>education</b> · <b>contact</b> · <b>mode [globe|lattice|bloch|eeg|jet|tank|sub|ak|bear]</b> · <b>fleet</b> · <b>action</b> · <b>audio [on|off|yt|vol 0-100]</b> · <b>play</b> · <b>tank</b> · <b>theme</b> · <b>goto &lt;section&gt;</b> · <b>clear</b>'},
       whoami:function(){return '<b>Rishabh Aryan</b> — AI/ML Researcher &amp; R&amp;D Engineer<br>M.Tech (Artificial Intelligence and Data Science), Dept. of CSE, Indian Institute of Information Technology, Bhagalpur<br>focus: leakage-aware benchmarks · honest evaluation · reproducible research code<br>objective: faculty role in CSE / AI &amp; Data Science'},
       'stats --all':function(){return 'research outputs ...... <b>'+STATS.total+'</b><br>lead/first-author ..... <b>'+STATS.lead+'</b><br>papers/chapters/books . <b>'+STATS.paper+'</b><br>preprints ............. <b>'+STATS.preprint+'</b> (SSRN 2 · Zenodo 2)<br>patents &amp; copyright .. <b>'+STATS.patent+'</b><br>thesis implementations  <b>14</b><br>by year ............... '+STATS.years},
@@ -159,6 +175,8 @@
     var ENTRIES=[];
     $$('[data-pal-section]').forEach(function(s){ENTRIES.push({g:'Section',t:s.getAttribute('data-pal-section'),k:'section',run:function(){go(s.id)}})});
     ENTRIES.push({g:'Action',t:'Toggle light / dark theme',k:'theme',run:toggleTheme});
+    ENTRIES.push({g:'View',t:'Switch to Academic view',k:'academic view mode clean formal scholar',run:function(){if(getView()!=='academic')toggleView()}});
+    ENTRIES.push({g:'View',t:'Switch to Tactical view',k:'tactical view mode military 3d',run:function(){if(getView()!=='tactical')toggleView()}});
     ENTRIES.push({g:'Action',t:'Print / Save academic CV (PDF)',k:'print pdf',run:function(){setTimeout(function(){window.print()},60)}});
     ENTRIES.push({g:'Action',t:'Copy ORCID iD ('+ORCID+')',k:'orcid copy',run:function(){copy('https://orcid.org/'+ORCID,'ORCID iD copied')}});
     function openExt(u){var w=window.open(u,'_blank','noopener,noreferrer');if(w)w.opener=null}

@@ -412,7 +412,9 @@
     }
     var raf=0;function kick(){if(!raf&&st.visible)raf=requestAnimationFrame(frame)}
     if('IntersectionObserver' in window)new IntersectionObserver(function(es){st.visible=es[0].isIntersecting;kick()}).observe(cv);
-    document.addEventListener('visibilitychange',function(){st.visible=!document.hidden;kick()});
+    function acad(){return document.documentElement.getAttribute('data-view')==='academic'}
+    document.addEventListener('visibilitychange',function(){st.visible=!document.hidden&&!acad();kick()});
+    document.addEventListener('ra:view',function(ev){if(ev.detail==='academic'){st.visible=false}else{kick()}});
     // pointer
     var ptrs={},lx=0,ly=0,pinch0=0,z0=1,moved=0;
     cv.addEventListener('pointerdown',function(e){ptrs[e.pointerId]=[e.clientX,e.clientY];lx=e.clientX;ly=e.clientY;moved=0;st.drag=true;st.vy=st.vp=0;try{cv.setPointerCapture(e.pointerId)}catch(_){}

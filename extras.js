@@ -156,6 +156,7 @@
     targets:function(){var r=cv?cv.getBoundingClientRect():{left:0,top:0};return G.items.map(function(b){return {x:b.x+r.left,y:b.y+r.top,host:b.host,lbl:b.lbl}})},
     _endNow:function(){G.t=ROUND}};
   function bindLaunchers(){$$('[data-game]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();open(b.dataset.game)})})}
-  function init(){initMap();initTeaching();bindLaunchers()}
+  function initSpot(){$$('[data-ac-filter]').forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.acFilter;document.dispatchEvent(new CustomEvent('ra:cv',{detail:{cat:c,l:c==='all'?'All archive entries':c==='preprint'?'Preprints':'Papers, chapters & books'}}))})})}
+  function init(){initMap();initTeaching();bindLaunchers();initSpot()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
