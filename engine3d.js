@@ -157,12 +157,12 @@
         lathe(flame,[[-1.62,.075],[-1.85,.06],[-2.3,0]],10,'x',[0,-.07,.2*s],[1,1],'glow');
       });
       return {body:body,flame:flame,hs:[
-        {k:'N001 RADAR',d:'Pulse-Doppler radome · look-down/shoot-down search',p:[1.9,.02,0]},
-        {k:'COCKPIT',d:'Bubble canopy · K-36 zero-zero ejection seat',p:[.85,.27,0]},
-        {k:'SWEPT WING',d:'Blended swept wing + LERX · +9 g airframe',p:[-.45,.03,.95]},
-        {k:'AL-31F AFTERBURNER',d:'Twin afterburning turbofans · Mach 2.35 dash',p:[-1.64,-.07,.2]},
-        {k:'TWIN FINS',d:'Canted twin vertical stabilisers · red-star roundels',p:[-1.25,.66,.34]},
-        {k:'R-73 MISSILE',d:'Wingtip-rail short-range air-to-air missile',p:[-.1,-.07,.74]}]}})();
+        {k:'RADAR // M.TECH THESIS',d:'Wind speed forecasting for renewable energy grid integration · IIIT Bhagalpur',p:[1.9,.02,0],f:{t:'wind',l:'Wind forecasting'}},
+        {k:'COCKPIT // IIIT BHAGALPUR',d:'M.Tech, Artificial Intelligence & Data Science · 2025–2027',p:[.85,.27,0],f:{t:'u:jet'}},
+        {k:'WINGS // 14 THESIS REPOS',d:'14 open reference implementations in five method groups',p:[-.45,.03,.95],f:{t:'u:jet'}},
+        {k:'AFTERBURNER // HCQ-LSTM',d:'Physics-informed hybrid classical-quantum LSTM tuned by a chaotic Lévy-flight quantum-inspired grey wolf optimizer',p:[-1.64,-.07,.2],f:{q:'physics-informed',l:'Physics-informed HCQ-LSTM'}},
+        {k:'TWIN FINS // QUANTUM HYBRIDS',d:'Variational quantum circuits · tensor networks · QI-GWO',p:[-1.25,.66,.34],f:{t:'quantum',l:'Quantum hybrids'}},
+        {k:'PAYLOAD // CBMA-TN-VQC',d:'Quantum-classical wind-to-green-hydrogen pipeline · Tanz Research Journal 2026',p:[-.1,-.07,.74],f:{q:'green hydrogen',l:'Green hydrogen'}}]}})();
     var jetTrail=[];
     function jetG(t){var J=VS.jet,sc=vscale(),roll=.42*Math.sin(t*.7)+J.roll,pit=.07*Math.sin(t*.5),hv=.06*Math.sin(t*1.1);
       return function(p){var q=[p[0]*sc,p[1]*sc,p[2]*sc];q=rx(q,roll);q=rz(q,pit);q[1]+=hv;return q}}
@@ -204,11 +204,11 @@
       lathe(gun,[[.4,.05],[1.05,.045],[1.08,.07],[1.32,.07],[1.35,.045],[2.05,.04],[2.08,.05],[2.12,0]],10,'x',[0,.32,0],[1,1],'gun');
       var per=[],tot=0;for(i=0;i<tp.length;i++){var A=tp[i],B=tp[(i+1)%tp.length],l=Math.hypot(B[0]-A[0],B[1]-A[1]);per.push([A,B,tot,l]);tot+=l}
       return {hull:hull,tur:tur,gun:gun,per:per,tot:tot,tgt:[2.9,.3,-1.95],hs:[
-        {k:'2A46M 125 MM GUN',d:'Smoothbore main gun · fume extractor · autoloader',p:[2.1,.32,0],part:'gun'},
-        {k:'CAST TURRET',d:'Cast-steel turret with Kontakt-1 ERA bricks',p:[-.12,.44,0],part:'tur'},
-        {k:'SLOPED GLACIS',d:'Laminate armour upper glacis · reactive tiles',p:[.92,.04,0]},
-        {k:'RUNNING GEAR',d:'Six road wheels per side · 60 km/h on road',p:[-.32,-.27,.73]},
-        {k:'V-46 DIESEL',d:'V-12 multi-fuel diesel · 780 hp · rear deck',p:[-.85,.12,0]}]}})();
+        {k:'125 MM // SPAM//SCAN',d:'Explainable spam, phishing & Indian-scam detector (TF-IDF + LR, Flask) · live demo',p:[2.1,.32,0],part:'gun',f:{t:'sec',l:'Scam & threat detection'}},
+        {k:'TURRET // PATENT 510316-001',d:'AI-Based Autonomous Multi-Agent Cyber Threat Detection and Response System',p:[-.12,.44,0],part:'tur',f:{q:'510316',l:'Patent 510316-001'}},
+        {k:'REACTIVE ARMOUR // SCAM DEFENCE',d:'Scam detection for English, Hindi & Hinglish · official bank-domain allowlist & lookalike checks',p:[.92,.04,0],f:{t:'sec',l:'Scam & threat detection'}},
+        {k:'CHASSIS // RESPONSIBLE AI',d:'Fairness gaps with bootstrap CIs, SHAP/LIME audits & governance crosswalks (UCI Adult)',p:[-.32,-.27,.73],f:{q:'responsible ai',l:'Responsible AI'}},
+        {k:'POWERPACK // PATENT 524970-001',d:'Smart Automated Energy and Mechanical Control Device',p:[-.85,.12,0],f:{q:'524970',l:'Patent 524970-001'}}]}})();
     function trackPt(u){var T=TANK,d=((u%1)+1)%1*T.tot;for(var i=0;i<T.per.length;i++){var s=T.per[i];if(d<=s[2]+s[3]){var f=(d-s[2])/s[3];return [s[0][0]+(s[1][0]-s[0][0])*f,s[0][1]+(s[1][1]-s[0][1])*f]}}return T.per[0][0]}
     function tank(t){var K=VS.tank,sc=vscale(),bob=.008*Math.sin(t*9),rock=.012*Math.sin(t*1.3);
       var G=function(p){var q=[p[0]*sc,p[1]*sc,p[2]*sc];q=rz(q,rock);q[1]+=bob-.05;return q};
@@ -251,11 +251,11 @@
       extrude(fins,[[-1.4,.2],[-1.7,.6],[-1.9,.6],[-1.88,.2]],'xy',-.012,.012,'hull2');
       extrude(fins,[[-1.5,-.2],[-1.72,-.46],[-1.88,-.46],[-1.88,-.2]],'xy',-.012,.012,'hull2');
       return {hull:hull,inner:inner,sail:sail,fins:fins,pL:pL,pR:pR,contact:[3.1,.1,1.5],hs:[
-        {k:'REINFORCED SAIL',d:'Ice-breaking sail · periscopes & masts',p:[.45,.72,0]},
-        {k:'BOW SONAR',d:'Skat-class active/passive sonar array',p:[1.98,0,0]},
-        {k:'MISSILE TUBES',d:'20 SLBM tubes forward of the sail',p:[1.3,.34,0]},
-        {k:'DOUBLE HULL',d:'Twin pressure hulls inside a light outer hull',p:[-.4,.0,.42]},
-        {k:'TWIN PROPULSORS',d:'Two shrouded 7-blade screws · twin reactors',p:[-1.96,-.02,.26]}]}})();
+        {k:'SAIL // IIT ROPAR × NIELIT ROPAR',d:'6-Month Industrial Training & Certification Program in AI & ML · BEED and pan-cancer studies',p:[.45,.72,0],f:{t:'u:sub'}},
+        {k:'SONAR // BEED EEG AUDIT',d:'Provenance audit & leakage-aware benchmark on the Bangalore EEG Epilepsy Dataset (SSRN)',p:[1.98,0,0],f:{t:'eeg',l:'EEG epilepsy'}},
+        {k:'PAYLOAD BAY // PATENT 526834-001',d:'Drug Dosage Dispensing Device',p:[1.3,.34,0],f:{q:'526834',l:'Patent 526834-001'}},
+        {k:'DOUBLE HULL // MRI + GENOMICS',d:'NEURO//SCAN brain tumour MRI (4 classes) + Pan-Cancer RNA-Seq with conformal reliability',p:[-.4,.0,.42],f:{t:'bio',l:'Brain MRI & genomics'}},
+        {k:'PROPULSORS // PATENT 496859-001',d:'Wearable Sensor for Sports and Medical Use',p:[-1.96,-.02,.26],f:{q:'496859',l:'Patent 496859-001'}}]}})();
     var bubbles=[];
     function sub(t){var B=VS.sub,sc=vscale(),pit=.04*Math.sin(t*.4),rl=.03*Math.sin(t*.55),hv=.04*Math.sin(t*.8);
       var G=function(p){var q=[p[0]*sc,p[1]*sc,p[2]*sc];q=rx(q,rl);q=rz(q,pit);q[1]+=hv;return q};
@@ -297,11 +297,11 @@
       [-1,1].forEach(function(s){star(gun,.075,function(u,v){return [-1.0+u,-.1+v,.058*s]},[0,0,s])});
       boxR(bolt,[.38,.07,.095],[.07,.035,.05],'metal');
       return {gun:gun,bolt:bolt,hs:[
-        {k:'MUZZLE',d:'7.62×39 mm · ~715 m/s muzzle velocity',p:[1.78,.05,0]},
-        {k:'GAS SYSTEM',d:'Long-stroke gas piston · ~600 rounds/min cyclic',p:[1.1,.14,0]},
-        {k:'CURVED MAGAZINE',d:'30-round steel box magazine',p:[.42,-.62,0]},
-        {k:'RECEIVER',d:'Kalashnikov 1947 design · charging handle right side',p:[.38,.07,.1],part:'bolt'},
-        {k:'WOODEN STOCK',d:'Hardwood stock & furniture · ~350 m effective range',p:[-1.0,-.1,.06]}]}})();
+        {k:'MUZZLE // COBRATATE @ IIT JAMMU',d:'Esoteric programming language built in a 24-hour hackathon · IIT Jammu Summer School 2026',p:[1.78,.05,0],f:{go:'experience',l:'Experience'}},
+        {k:'GAS SYSTEM // AGENTIC STACK',d:'Codex · Claude Code · Cursor · Devin · Google Antigravity',p:[1.1,.14,0],f:{go:'tools',l:'Agentic AI stack'}},
+        {k:'MAGAZINE // 58 ENTRIES · 47 LEAD',d:'Papers, chapters, preprints, patents & copyright · 47 lead/first-author works',p:[.42,-.62,0],f:{lead:true,l:'Lead-author works'}},
+        {k:'RECEIVER // 5 PATENTS + 1 COPYRIGHT',d:'Indian patents and a Government of India copyright registration',p:[.38,.07,.1],part:'bolt',f:{t:'ip',l:'Patents & IP'}},
+        {k:'STOCK // PATENT 20,262,107,892',d:'Hybrid Mechanical Waste-to-Energy Processing System',p:[-1.0,-.1,.06],f:{q:'waste-to-energy',l:'Waste-to-energy patent'}}]}})();
     var casings=[];
     function ak(t){var A=VS.ak,sc=vscale()*1.05,tl=.12*Math.sin(t*.5),hv=.03*Math.sin(t*.9);
       var G=function(p){var q=[(p[0]-.15)*sc,p[1]*sc+.08,p[2]*sc];q=rx(q,tl);q[1]+=hv;return q};
@@ -314,6 +314,10 @@
         var a1=PW(e.p),a2=PW([e.p[0]+.05*Math.cos(e.l*20),e.p[1]+.02,e.p[2]+.05*Math.sin(e.l*20)]);ctx.strokeStyle='rgba(210,164,72,'+Math.min(1,e.l*1.5)+')';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(a1[0],a1[1]);ctx.lineTo(a2[0],a2[1]);ctx.stroke()}
       return G}
 
+    var UNIT={jet:{d:'WIND & QUANTUM FORECASTING',s:'M.Tech thesis · 14 thesis repos · Indian SCADA & quantum hybrids'},tank:{d:'SCAM, THREAT & CONTROL DEFENSE',s:'SPAM//SCAN · cyber-threat & control patents · Responsible AI'},
+      sub:{d:'DEEP SIGNAL & BIOMEDICAL AI',s:'BEED EEG audit · brain tumour MRI · pan-cancer genomics · med-device patents'},ak:{d:'PATENTS, IP & AGENTIC STACK',s:'5 patents + 1 copyright · 47 lead works · agentic AI engineering'}};
+    function ucount(m){return (window.RA_UNIT_COUNTS||{})['u:'+m]}
+    function cvGo(f){document.dispatchEvent(new CustomEvent('ra:cv',{detail:f}));if(window.RAAudio)window.RAAudio.sfx('click')}
     var VS={jet:{roll:0,r0:null},tank:{tur:0,aim:0,manualUntil:-1,locked:false},sub:{pings:[],last:-9,hitT:null},ak:{b0:null}};
     var VEH={jet:{draw:jet,def:JET,act:'Barrel Roll'},tank:{draw:tank,def:TANK,act:'Rotate Turret'},sub:{draw:sub,def:SUB,act:'Sonar Ping'},ak:{draw:ak,def:AK,act:'Chamber Round'}};
     function vAction(){var m=st.mode,t=st.t,au=window.RAAudio;
@@ -323,12 +327,12 @@
       else if(m==='ak'){if(VS.ak.b0==null){VS.ak.b0=t;var g=lastG||function(p){return p};casings.push({p:g([.3,.13,.07]),v:[.006,.03,.022],l:1})}if(au)au.sfx('bolt')}
       kick()}
     var lastG=null,HS=[],lock=null;
-    function telemetry(t){var m=st.mode,hd=((st.yaw*57.3%360+360)%360).toFixed(0),L=[];
+    function telemetry(t){var m=st.mode,hd=((st.yaw*57.3%360+360)%360).toFixed(0),L=[],n=ucount(m);
       if(m==='jet')L=['HDG '+hd+'°','ALT '+(11200+520*Math.sin(t*.3)).toFixed(0)+' M','MACH '+(1.9+.28*Math.sin(t*.4)).toFixed(2),'BANK '+((.42*Math.sin(t*.7)+VS.jet.roll)*57.3%360).toFixed(0)+'°'];
       else if(m==='tank')L=['HDG '+hd+'°','SPD '+(54+5*Math.sin(t*.5)).toFixed(0)+' KM/H','TURRET '+((VS.tank.tur*57.3+360)%360).toFixed(0)+'°','ARMOR ERA · '+(VS.tank.locked?'LOCKED':'SEARCH')];
       else if(m==='sub')L=['HDG '+hd+'°','DEPTH '+(380+14*Math.sin(t*.25)).toFixed(0)+' M','SPD '+(24+2*Math.sin(t*.3)).toFixed(1)+' KN','SONAR '+(VS.sub.hitT!=null&&t-VS.sub.hitT<1.6?'CONTACT':'ACTIVE')];
       else if(m==='ak')L=['CAL 7.62×39 MM','RATE 600 RPM','V0 715 M/S','MAG 30 RDS'];
-      return L}
+      L=[UNIT[m].d,'CV ENTRIES '+(n!=null?n:'—')].concat(L.slice(0,2));return L}
     function drawTele(L){var x=12,y=H-14-L.length*15;ctx.font='700 10.5px "JetBrains Mono",monospace';var w=0;L.forEach(function(s){w=Math.max(w,ctx.measureText(s).width)});
       ctx.fillStyle=PAL.light?'rgba(255,250,240,.78)':'rgba(10,10,10,.6)';ctx.fillRect(x-6,y-12,w+14,L.length*15+8);ctx.strokeStyle=c('red',.6);ctx.lineWidth=1;ctx.strokeRect(x-6,y-12,w+14,L.length*15+8);
       L.forEach(function(s,i){ctx.fillStyle=c(i?'ink':'red',.95);ctx.fillText(s,x,y+i*15)})}
@@ -338,7 +342,7 @@
         ctx.strokeStyle=c(lk?'red':'yellow',.9*(1-pulse));ctx.lineWidth=1.2;ctx.beginPath();ctx.arc(o.sx,o.sy,r+pulse*10,0,7);ctx.stroke();
         ctx.fillStyle=c(lk?'red':'yellow',.95);ctx.beginPath();ctx.moveTo(o.sx,o.sy-r);ctx.lineTo(o.sx+r,o.sy);ctx.lineTo(o.sx,o.sy+r);ctx.lineTo(o.sx-r,o.sy);ctx.closePath();ctx.fill();
         if(lk){var rr=14+4*Math.sin(t*6);ctx.strokeStyle=c('red',.95);for(var q=0;q<4;q++){ctx.save();ctx.translate(o.sx,o.sy);ctx.rotate(q*PI/2);ctx.beginPath();ctx.moveTo(rr,-rr+6);ctx.lineTo(rr,-rr);ctx.lineTo(rr-6,-rr);ctx.stroke();ctx.restore()}}
-        if(hov||lk||W>700){ctx.font=(hov||lk?'700 11.5px':'600 10px')+' "JetBrains Mono",monospace';ctx.fillStyle=c(hov||lk?'ink':'yellow',hov||lk?1:.8);var tw=ctx.measureText(o.h.k).width;ctx.fillText(o.h.k,(o.sx+r+6+tw>W-6)?o.sx-r-6-tw:o.sx+r+6,o.sy-r-2)}})}
+        if(hov||lk||W>700){ctx.font=(hov||lk?'700 11.5px':'600 10px')+' "JetBrains Mono",monospace';ctx.fillStyle=c(hov||lk?'ink':'yellow',hov||lk?1:.8);var lbl=hov||lk?o.h.k:o.h.k.split(' // ')[0],tw=ctx.measureText(lbl).width;ctx.fillText(lbl,(o.sx+r+6+tw>W-6)?o.sx-r-6-tw:o.sx+r+6,o.sy-r-2)}})}
     var DRAW={globe:globe,lattice:lattice,bloch:bloch,eeg:eeg};
     function nodes(t){
       var out=[];NODES.forEach(function(n){var p=P(n.p[0],n.p[1],n.p[2]);n.sx=p[0];n.sy=p[1];n.sz=p[2];out.push(n)});
@@ -353,7 +357,7 @@
     function frame(){
       if(!st.visible){raf=0;return}
       if(!RM)st.t+=1/60;
-      if(!st.drag){st.yaw+=st.vy;st.pitch+=st.vp;st.vy*=.94;st.vp*=.94;if(!RM&&Math.abs(st.vy)<.0006){if(OSC[st.mode]){if(st.t-st.lastDrag>3){var tg=VIEW[st.mode][0]+.55*Math.sin(st.t*.22);st.yaw+=(tg-st.yaw)*.02}}else st.yaw+=.0028}}else st.lastDrag=st.t;
+      if(!st.drag){st.yaw+=st.vy;st.pitch+=st.vp;st.vy*=.94;st.vp*=.94;if(!RM&&Math.abs(st.vy)<.0006){if(OSC[st.mode]){if(st.t-st.lastDrag>3){var tg=VIEW[st.mode][0]+.55*Math.sin(st.t*.22);st.yaw+=(tg-st.yaw)*.02}}else if(!st.hover&&!(lock&&st.t-lock.t<6))st.yaw+=.0028}}else st.lastDrag=st.t;
       st.pitch=Math.max(-1.2,Math.min(1.2,st.pitch));st.zoom+=(st.tz-st.zoom)*.15;
       prep();ctx.clearRect(0,0,W,H);
       // radar backdrop
@@ -376,9 +380,9 @@
         var dx=e.clientX-lx,dy=e.clientY-ly;lx=e.clientX;ly=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);st.vy=dx*.006;st.vp=dy*.006;st.yaw+=st.vy;st.pitch+=st.vp;tip.hidden=true;return}
       var h=hit(e.clientX-r.left,e.clientY-r.top);st.hover=h;cv.style.cursor=h?'pointer':'grab';
       if(h){showTip(h)}else tip.hidden=true});
-    function showTip(h){tip.hidden=false;if(h.k){tip.innerHTML='<b>'+h.k+'</b><span>'+h.d+'</span><em>click to lock target ›</em>'}else{var cnt=(window.RA_TOPIC_COUNTS||{})[h.id];tip.innerHTML='<b>'+h.label+'</b><span>'+h.sub+'</span><em>'+(cnt!=null?cnt+' archive entries · ':'')+'click to filter ›</em>'}var tx=Math.min(h.sx+14,W-230);tip.style.transform='translate('+Math.max(4,tx)+'px,'+Math.max(4,Math.min(H-90,h.sy+12))+'px)'}
+    function showTip(h){tip.hidden=false;if(h.k){tip.innerHTML='<b>'+h.k+'</b><span>'+h.d+'</span><em>'+(lock&&lock.h===h?'click again → matching CV entries ›':'click to lock · again for matching CV work ›')+'</em>'}else{var cnt=(window.RA_TOPIC_COUNTS||{})[h.id];tip.innerHTML='<b>'+h.label+'</b><span>'+h.sub+'</span><em>'+(cnt!=null?cnt+' archive entries · ':'')+'click to filter ›</em>'}var tx=Math.min(h.sx+14,W-230);tip.style.transform='translate('+Math.max(4,tx)+'px,'+Math.max(4,Math.min(H-90,h.sy+12))+'px)'}
     function up(e){var wasTap=moved<6;delete ptrs[e.pointerId];if(Object.keys(ptrs).length===0)st.drag=false;pinch0=0;
-      if(wasTap&&e.type==='pointerup'){var r=cv.getBoundingClientRect(),h=hit(e.clientX-r.left,e.clientY-r.top);if(h){if(h.k){lock={h:h,t:st.t};st.hover=h;showTip(h);if(window.RAAudio)window.RAAudio.sfx('lock')}else select(h.id)}}}
+      if(wasTap&&e.type==='pointerup'){var r=cv.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top,h=hit(px,py);if(lock&&VEH[st.mode]&&st.t-lock.t<6&&lock.h.sx!=null&&Math.hypot(lock.h.sx-px,lock.h.sy-py)<34)h=lock.h;if(h){if(h.k){if(lock&&lock.h===h&&st.t-lock.t<6){tip.hidden=true;cvGo(h.f||{t:'u:'+st.mode})}else{lock={h:h,t:st.t};st.hover=h;showTip(h);if(window.RAAudio)window.RAAudio.sfx('lock')}}else select(h.id)}}}
     cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
     cv.addEventListener('pointerleave',function(){if(!st.drag){st.hover=null;tip.hidden=true}});
     cv.addEventListener('wheel',function(e){if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();st.tz=Math.max(.6,Math.min(2.2,st.tz*(e.deltaY>0?.92:1.08)))},{passive:false});
@@ -386,14 +390,14 @@
     function select(id){document.dispatchEvent(new CustomEvent('ra:topic',{detail:id}))}
     function setMode(m,quiet){if(DRAW[m]||VEH[m]){var ch=m!==st.mode;st.mode=m;st.yaw=VIEW[m][0];st.pitch=VIEW[m][1];st.vy=st.vp=0;st.lastDrag=-99;trail.length=0;jetTrail.length=0;bubbles.length=0;casings.length=0;lock=null;st.hover=null;tip.hidden=true;HS=[];
       Array.prototype.forEach.call(document.querySelectorAll('[data-mode],[data-unit]'),function(b){b.setAttribute('aria-pressed',(b.dataset.mode||b.dataset.unit)===m?'true':'false')});panel.setAttribute('data-active-mode',m);panel.setAttribute('data-kind',VEH[m]?'fleet':'research');
-      if(actBtn){actBtn.hidden=!VEH[m];if(VEH[m])actBtn.textContent='▶ '+VEH[m].act}if(ch&&!quiet&&window.RAAudio)window.RAAudio.sfx('switch');kick()}}
-    var actBtn=panel.querySelector('[data-act]');if(actBtn)actBtn.addEventListener('click',vAction);
+      if(actBtn){if(VEH[m])actBtn.textContent='▶ '+VEH[m].act}if(ubar){ubar.hidden=!VEH[m];if(VEH[m]){var n=ucount(m);ubar.querySelector('.su-n').textContent=UNIT[m].d;ubar.querySelector('.su-s').textContent=UNIT[m].s+(n!=null?' · '+n+' CV entries':'')}}if(ch&&!quiet&&window.RAAudio)window.RAAudio.sfx('switch');kick()}}
+    var actBtn=panel.querySelector('[data-act]'),ubar=panel.querySelector('.sc-unit'),cvBtn=panel.querySelector('[data-cvfilter]');if(actBtn)actBtn.addEventListener('click',vAction);if(cvBtn)cvBtn.addEventListener('click',function(){if(VEH[st.mode])cvGo({t:'u:'+st.mode})});
     Array.prototype.forEach.call(panel.querySelectorAll('[data-mode]'),function(b){b.addEventListener('click',function(){setMode(b.dataset.mode)})});
     Array.prototype.forEach.call(panel.querySelectorAll('[data-zoom]'),function(b){b.addEventListener('click',function(){var z=b.dataset.zoom;if(z==='in')st.tz=Math.min(2.2,st.tz*1.15);else if(z==='out')st.tz=Math.max(.6,st.tz/1.15);else{st.tz=1;st.yaw=VIEW[st.mode][0];st.pitch=VIEW[st.mode][1];st.vy=st.vp=0;st.lastDrag=-99}})});
     Array.prototype.forEach.call(panel.querySelectorAll('[data-node]'),function(b){b.addEventListener('click',function(){select(b.dataset.node)});
       b.addEventListener('mouseenter',function(){st.hover=NODES.filter(function(n){return n.id===b.dataset.node})[0]});b.addEventListener('mouseleave',function(){st.hover=null})});
     kick();
-    return {setMode:setMode,nextMode:function(){setMode(MODES[(MODES.indexOf(st.mode)+1)%MODES.length]);return st.mode},getMode:function(){return st.mode},action:function(){if(VEH[st.mode])vAction()},view:function(y,p,z){st.yaw=y;st.pitch=p;st.tz=st.zoom=z||1;st.vy=st.vp=0;st.lastDrag=st.t;kick()},modes:MODES,labels:MODE_LABEL,fleet:['jet','tank','sub','ak']};
+    return {setMode:setMode,nextMode:function(){setMode(MODES[(MODES.indexOf(st.mode)+1)%MODES.length]);return st.mode},getMode:function(){return st.mode},action:function(){if(VEH[st.mode])vAction()},filterCV:function(){if(VEH[st.mode])cvGo({t:'u:'+st.mode})},units:UNIT,view:function(y,p,z){st.yaw=y;st.pitch=p;st.tz=st.zoom=z||1;st.vy=st.vp=0;st.lastDrag=st.t;kick()},modes:MODES,labels:MODE_LABEL,fleet:['jet','tank','sub','ak']};
   }
 
   /* ---------- background tactical grid + particle field ---------- */
@@ -439,12 +443,12 @@
       (function(){var u=(t/30+.66)%1,x=-80+u*(W+160),y=hz*.42+Math.sin(t*.6)*4;
         var g=ctx.createLinearGradient(x-240*sc0,0,x-30*sc0,0);g.addColorStop(0,c('ink',0));g.addColorStop(1,c('ink',A*.7));ctx.strokeStyle=g;ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x-240*sc0,y+1);ctx.lineTo(x-28*sc0,y);ctx.stroke();
         ctx.save();ctx.translate(x,y);ctx.rotate(Math.sin(t*.6)*.05);ctx.scale(sc0,sc0);ctx.strokeStyle=c('ink',A*1.4);ctx.fillStyle=c('olive',A*.9);ctx.lineWidth=1;
-        path(JETP);ctx.fill();ctx.stroke();ctx.fillStyle=c('red',A*2);ctx.beginPath();ctx.arc(-19,-6,2,0,7);ctx.fill();ctx.restore();blip(x+30*sc0,y-6,'SU-27 · M1.9 · FL360','red')})();
+        path(JETP);ctx.fill();ctx.stroke();ctx.fillStyle=c('red',A*2);ctx.beginPath();ctx.arc(-19,-6,2,0,7);ctx.fill();ctx.restore();blip(x+30*sc0,y-6,'SU-27 · WIND/QUANTUM','red')})();
       (function(){var u=(t/48+.25)%1,x=W+80-u*(W+160),y=hz-1;ctx.save();ctx.translate(x,y);ctx.scale(-sc0,sc0);ctx.strokeStyle=c('ink',A*1.4);ctx.fillStyle=c('olive',A);ctx.lineWidth=1;
         path(TANKH);ctx.fill();ctx.stroke();path(TANKT);ctx.fill();ctx.stroke();ctx.beginPath();ctx.moveTo(10,-15);ctx.lineTo(40,-16.5);ctx.lineWidth=2;ctx.stroke();ctx.lineWidth=1;
-        ctx.beginPath();ctx.moveTo(-24,-5);ctx.lineTo(24,-5);ctx.arc(24,-2.5,2.5,-PI2,PI2);ctx.lineTo(-24,0);ctx.arc(-24,-2.5,2.5,PI2,-PI2);ctx.stroke();ctx.restore();blip(x-10,y-34*sc0,'T-72 · 60 KM/H','yellow')})();
+        ctx.beginPath();ctx.moveTo(-24,-5);ctx.lineTo(24,-5);ctx.arc(24,-2.5,2.5,-PI2,PI2);ctx.lineTo(-24,0);ctx.arc(-24,-2.5,2.5,PI2,-PI2);ctx.stroke();ctx.restore();blip(x-10,y-34*sc0,'T-72 · THREAT/SCAM ML','yellow')})();
       (function(){var u=(t/62+.1)%1,x=-80+u*(W+160),y=hz+(H-hz)*.55,r=((t%3.2)/3.2);ctx.strokeStyle=c('cyan',A*1.6*(1-r));ctx.lineWidth=1.2;ctx.beginPath();ctx.ellipse(x+22,y,8+r*60,3+r*20,0,0,7);ctx.stroke();
-        ctx.save();ctx.translate(x,y);ctx.scale(sc0,sc0);ctx.strokeStyle=c('cyan',A*1.6);ctx.fillStyle=c('cyan',A*.35);ctx.beginPath();ctx.ellipse(0,0,30,6.5,0,0,7);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(4,0,6,2.5,0,0,7);ctx.stroke();ctx.beginPath();ctx.moveTo(-30,0);ctx.lineTo(-38,-5);ctx.moveTo(-30,0);ctx.lineTo(-38,5);ctx.stroke();ctx.restore();blip(x-6,y-16*sc0,'TYPHOON · −380 M','cyan')})();
+        ctx.save();ctx.translate(x,y);ctx.scale(sc0,sc0);ctx.strokeStyle=c('cyan',A*1.6);ctx.fillStyle=c('cyan',A*.35);ctx.beginPath();ctx.ellipse(0,0,30,6.5,0,0,7);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(4,0,6,2.5,0,0,7);ctx.stroke();ctx.beginPath();ctx.moveTo(-30,0);ctx.lineTo(-38,-5);ctx.moveTo(-30,0);ctx.lineTo(-38,5);ctx.stroke();ctx.restore();blip(x-6,y-16*sc0,'TYPHOON · EEG/BIOMED','cyan')})();
       raf=RM?0:requestAnimationFrame(frame)}
     if('IntersectionObserver' in window)new IntersectionObserver(function(es){vis=es[0].isIntersecting;if(vis&&!raf)raf=requestAnimationFrame(frame)}).observe(cv);
     new MutationObserver(function(){if(!raf)raf=requestAnimationFrame(frame)}).observe(root,{attributes:true,attributeFilter:['data-theme']});

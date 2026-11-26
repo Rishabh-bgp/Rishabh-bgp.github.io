@@ -544,8 +544,8 @@ html[data-theme="light"] .unit svg .m{fill:rgba(90,107,34,.32)}
 .unit[aria-pressed="true"] b{color:var(--yellow)}
 /* soundtrack HUD */
 .au{display:inline-flex;align-items:center;gap:6px;margin-left:12px}
-.au button{font:700 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);background:transparent;border:1px solid var(--line2);padding:3px 7px;height:18px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;border-radius:2px;white-space:nowrap}
-.au button:hover,.au button:focus-visible{border-color:var(--red);color:var(--red)}
+.au button,.au a.au-trk{font:700 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);background:transparent;border:1px solid var(--line2);padding:3px 7px;height:18px;display:inline-flex;align-items:center;gap:5px;cursor:pointer;border-radius:2px;white-space:nowrap}
+.au button:hover,.au button:focus-visible,.au a.au-trk:hover,.au a.au-trk:focus-visible{border-color:var(--red);color:var(--red)}
 .au-play{border-color:var(--red)!important;color:var(--ink)!important;animation:auInvite 2.4s ease-in-out infinite}
 .au-play.on{background:var(--red);color:#0a0a0a!important;animation:none}
 .au-ic{font-size:11px}
@@ -565,3 +565,28 @@ html[data-theme="light"] .unit svg .m{fill:rgba(90,107,34,.32)}
 #patrol{position:absolute;inset:0;width:100%;height:100%;display:block}
 .patrol-l{position:absolute;right:8px;bottom:5px;font:700 9.5px/1 var(--mono);letter-spacing:.14em;color:var(--mute)}
 @media (max-width:620px){.patrol-wrap{height:84px}}
+/* v4: CV-mapped fleet */
+.sc-unit{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;padding:9px 12px;border-top:1px solid var(--line2);background:rgba(255,212,0,.04)}
+.sc-unit[hidden]{display:none}
+.su-t{min-width:0;flex:1 1 260px;font:600 11px/1.35 var(--mono);letter-spacing:.04em;color:var(--mute)}
+.su-k{color:var(--olive)}
+.su-n{color:var(--yellow);letter-spacing:.07em}
+.su-s{display:block;margin-top:2px;overflow-wrap:anywhere}
+.su-b{display:flex;flex-wrap:wrap;gap:8px}
+.sc-unit button{font:700 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;background:transparent;cursor:pointer;border:1px solid var(--yellow);color:var(--yellow)}
+.sc-unit button:hover,.sc-unit button:focus-visible{background:var(--yellow);color:#0a0a0a}
+.sc-unit .sc-cv{border-color:var(--cyan);color:var(--cyan)}
+.sc-unit .sc-cv:hover,.sc-unit .sc-cv:focus-visible{background:var(--cyan);color:#0a0a0a}
+.unit .u-dom{font:700 10.5px/1.25 var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan)}
+.unit[aria-pressed="true"] .u-dom{color:var(--ink)}
+@media (max-width:620px){.sc-unit button{flex:1 1 auto}.su-b{width:100%}.unit .u-dom{font-size:10px}}
+/* v4: YouTube soundtrack */
+.au a.au-trk{text-decoration:none}
+.yt-dock{position:fixed;left:0;bottom:0;width:200px;height:200px;opacity:.01;pointer-events:none;z-index:-1;overflow:hidden;clip-path:inset(0 0 0 0)}
+.yt-dock iframe{width:200px;height:200px;border:0}
+.au-play.busy{animation:none;border-color:var(--yellow)!important}
+.au-play.busy .au-lbl{animation:auBlink 1s steps(2) infinite}
+.au-play.err{animation:none;border-style:dashed!important}
+@keyframes auBlink{50%{opacity:.35}}
+@media (max-width:620px){.au a.au-trk{max-width:92px;overflow:hidden;text-overflow:ellipsis}}
+@media print{.yt-dock,#ytDock{display:none!important}}

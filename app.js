@@ -50,13 +50,15 @@
     var PUBS=JSON.parse($('#pubdata').textContent);
     var items=$$('ol.pubs li'),groups=$$('.pub-group');
     var S={cat:'all',lead:false,year:'all',topic:null,q:''};
-    var TOPIC_LABEL={wind:'Wind Forecasting',bio:'Brain MRI & Genomics',eeg:'EEG Epilepsy',quantum:'Quantum Hybrids',sec:'Scam & Threat Detection',ip:'Patents & IP'};
+    var TOPIC_LABEL={wind:'Wind Forecasting',bio:'Brain MRI & Genomics',eeg:'EEG Epilepsy',quantum:'Quantum Hybrids',sec:'Scam & Threat Detection',ip:'Patents & IP','u:jet':'Wind & Quantum Forecasting','u:tank':'Scam, Threat & Control Defense','u:sub':'Deep Signal & Biomedical AI','u:ak':'Patents, IP & Agentic Stack'};
+    var UNITSET={'u:jet':['wind','quantum'],'u:tank':['sec','ctrl','rai'],'u:sub':['bio','eeg'],'u:ak':['ip']};
+    function hasT(p,t){var s=UNITSET[t];if(!s)return p.topics.indexOf(t)>-1;for(var j=0;j<s.length;j++)if(p.topics.indexOf(s[j])>-1)return true;return false}
     var q=$('#pubSearch'),ysel=$('#pubYear'),out=$('#pubCount'),empty=$('#pubEmpty'),leadT=$('#leadToggle'),chip=$('#topicChip');
     function match(i,ignore){var p=PUBS[i],ok=true;
       if(ignore!=='cat'&&S.cat!=='all')ok=(S.cat==='ssrn'||S.cat==='zenodo')?p.kind===S.cat:p.cat===S.cat;
       if(ok&&ignore!=='lead'&&S.lead)ok=p.lead;
       if(ok&&ignore!=='year'&&S.year!=='all')ok=String(p.year)===S.year;
-      if(ok&&S.topic)ok=p.topics.indexOf(S.topic)>-1;
+      if(ok&&S.topic)ok=hasT(p,S.topic);
       if(ok&&S.q)ok=items[i]._txt.indexOf(S.q)>-1;return ok}
     items.forEach(function(li){li._txt=li.textContent.toLowerCase()});
     function apply(){
@@ -86,6 +88,11 @@
     $$('.an-topic').forEach(function(b){b.addEventListener('click',function(){S.topic=S.topic===b.dataset.topic?null:b.dataset.topic;apply()})});
     function setTopic(id){S={cat:'all',lead:false,year:'all',topic:id,q:''};q.value='';apply();go('publications');toast('> filter: '+TOPIC_LABEL[id])}
     document.addEventListener('ra:topic',function(e){setTopic(e.detail)});
+    window.RA_UNIT_COUNTS={};Object.keys(UNITSET).forEach(function(u){window.RA_UNIT_COUNTS[u]=PUBS.filter(function(p){return hasT(p,u)}).length});
+    document.addEventListener('ra:cv',function(e){var f=e.detail||{};
+      if(f.t){setTopic(f.t);return}
+      if(f.go){go(f.go);toast('> jump: '+(f.l||f.go));return}
+      S={cat:'all',lead:!!f.lead,year:'all',topic:null,q:(f.q||'').toLowerCase()};q.value=f.q||'';apply();go('publications');toast('> filter: '+(f.l||f.q||'lead-author'))});
     $$('[data-topic-link]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();setTopic(a.dataset.topicLink)})});
     apply();
 
@@ -129,14 +136,13 @@
       else if(/^mode\b/.test(low)){var m=low.split(' ')[1];m=({mig:'jet','mig-21':'jet','su-27':'jet',su27:'jet',interceptor:'jet','t-72':'tank',t72:'tank','t-34':'tank',armor:'tank',armour:'tank',typhoon:'sub',akula:'sub',submarine:'sub','ak-47':'ak',ak47:'ak',rifle:'ak'})[m]||m;if(window.RA3D&&window.RA3D.modes.indexOf(m)>-1){window.RA3D.setMode(m);r='3d mode → '+window.RA3D.labels[m]}else if(window.RA3D){r='3d mode → '+window.RA3D.labels[window.RA3D.nextMode()]}else r='3d engine offline'}
       else if(/^(goto|cd|open) /.test(low)){var id=low.split(' ')[1];if(document.getElementById(id)){go(id);r='navigating → #'+id}else r='unknown section. try: dossier, education, interests, research, flagship, publications, experience, conferences, skills'}
       else if(low==='ls'||low==='ls -a')r='dossier/ education/ interests/ research/ flagship/ publications/ experience/ conferences/ skills/ arsenal/';
-      else if(/^(audio|music)\b/.test(low)){var A=window.RAAudio,arg=low.split(' ').slice(1);if(!A||!A.supported)r='web audio unavailable in this browser';
-        else if(!arg.length)r='soundtrack: '+(A.isPlaying()?'<b>PLAYING</b>':'OFF')+' · track '+A.getTrack()+' · vol '+Math.round(A.getVolume()*100)+'% · tracks: '+A.tracks.join(' / ');
-        else if(arg[0]==='on'||arg[0]==='play'){A.play();r='♪ soundtrack ON → '+A.getTrack()}
+      else if(/^(audio|music)\b/.test(low)){var A=window.RAAudio,arg=low.split(' ').slice(1);if(!A)r='audio unavailable';
+        else if(!arg.length)r='soundtrack: '+(A.isPlaying()?'<b>PLAYING</b>':'OFF')+' · track '+A.getTrack()+' (YouTube · Fix_37) · vol '+Math.round(A.getVolume()*100)+'%';
+        else if(arg[0]==='on'||arg[0]==='play'){A.play();r='♪ soundtrack loading → '+A.getTrack()}
         else if(arg[0]==='off'||arg[0]==='stop'||arg[0]==='pause'){A.pause();r='♪ soundtrack OFF'}
-        else if(arg[0]==='next'){r='♪ track → '+A.next();if(!A.isPlaying())A.play()}
-        else if(arg[0]==='track'&&arg[1]){if(A.setTrack(arg.slice(1).join(' '))){if(!A.isPlaying())A.play();r='♪ track → '+A.getTrack()}else r='unknown track. try: march, sonar, air'}
+        else if(arg[0]==='yt'||arg[0]==='open'||arg[0]==='youtube'){window.open(A.url,'_blank','noopener');r='♪ opening on YouTube → '+A.getTrack()}
         else if((arg[0]==='vol'||arg[0]==='volume')&&!isNaN(+arg[1])){A.setVolume(+arg[1]/100);r='♪ volume → '+Math.round(A.getVolume()*100)+'%'}
-        else r='usage: audio [on|off|next|track march|sonar|air|vol 0-100]'}
+        else r='usage: audio [on|off|yt|vol 0-100]'}
       else if(low==='sudo hire')r='<span class=g>ACCESS GRANTED.</span> Dossier forwarded — see <b>contact</b>.';
       else r='command not found: '+cmd.replace(/</g,'&lt;')+' — type <b>help</b>';
       if(r!=null)line(r)}
@@ -163,9 +169,8 @@
     ENTRIES.push({g:'Contact',t:'GitHub profile',k:'github code contact',run:function(){openExt('https://github.com/Rishabh-bgp')}});
     ENTRIES.push({g:'Action',t:'Switch 3D mode (next)',k:'3d mode globe lattice bloch eeg',run:function(){if(window.RA3D){var m=window.RA3D.nextMode();toast('> 3D mode: '+window.RA3D.labels[m]);go('top')}}});
     [['jet','3D: MiG-21 / Su-27 interceptor','jet fighter mig su27 aircraft plane fleet'],['tank','3D: T-72 / T-34 main battle tank','tank armor armour t72 t34 fleet'],['sub','3D: Typhoon / Akula submarine','submarine sub typhoon akula sonar fleet'],['ak','3D: AK-47 arsenal','ak47 ak-47 rifle arsenal kalashnikov']].forEach(function(u){ENTRIES.push({g:'Fleet',t:u[1],k:u[2]+' 3d mode',run:function(){if(window.RA3D){window.RA3D.setMode(u[0]);go('theatre')}}})});
-    ENTRIES.push({g:'Audio',t:'Play / pause soundtrack',k:'audio music sound soundtrack play pause toggle',run:function(){if(window.RAAudio){var on=window.RAAudio.toggle();toast('♪ soundtrack '+(on?'ON → '+window.RAAudio.getTrack():'OFF'))}}});
-    ENTRIES.push({g:'Audio',t:'Next soundtrack track',k:'audio music next track',run:function(){if(window.RAAudio){var n=window.RAAudio.next();if(!window.RAAudio.isPlaying())window.RAAudio.play();toast('♪ track → '+n)}}});
-    ['RED MARCH','SONAR DEPTH','AIRSPACE'].forEach(function(n,i){ENTRIES.push({g:'Audio',t:'Track: '+n,k:'audio music track '+n.toLowerCase(),run:function(){if(window.RAAudio){window.RAAudio.setTrack(i);if(!window.RAAudio.isPlaying())window.RAAudio.play();toast('♪ track → '+n)}}})});
+    ENTRIES.push({g:'Audio',t:'Play / pause soundtrack',k:'audio music sound soundtrack play pause toggle',run:function(){if(window.RAAudio){var on=window.RAAudio.toggle();toast('♪ soundtrack '+(on?'LOADING → '+window.RAAudio.getTrack():'OFF'))}}});
+    ENTRIES.push({g:'Audio',t:'Open soundtrack on YouTube',k:'audio music youtube soviet union edit open',run:function(){if(window.RAAudio)window.open(window.RAAudio.url,'_blank','noopener')}});
     ENTRIES.push({g:'Action',t:'Open tactical terminal',k:'terminal console shell',run:function(){go('console');setTimeout(function(){tin.focus({preventScroll:true})},400)}});
     ENTRIES.push({g:'Action',t:'Show lead-author works only',k:'lead first author filter',run:function(){S={cat:'all',lead:true,year:'all',topic:null,q:''};q.value='';apply();go('publications')}});
     $$('[data-pal-degree]').forEach(function(d){ENTRIES.push({g:'Degree',t:d.getAttribute('data-pal-degree'),k:'education degree',run:function(){go('education');d.classList.add('flash');setTimeout(function(){d.classList.remove('flash')},1600)}})});
