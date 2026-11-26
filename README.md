@@ -4,10 +4,14 @@
 
 Source for the academic CV website of **Rishabh Aryan**: AI/ML researcher, M.Tech (Artificial Intelligence and Data Science), Department of Computer Science and Engineering, Indian Institute of Information Technology, Bhagalpur.
 
-- Static HTML, CSS and vanilla JavaScript, served by GitHub Pages from `main` (no build step, no frameworks).
-- Dark/light theme matching the [GitHub profile](https://github.com/Rishabh-bgp) palette, with a self-contained canvas 3D radar lattice and tilt cards (disabled under `prefers-reduced-motion`).
-- Publications archive (58 entries, 47 lead-author) with filters for lead author, preprints (Elsevier SSRN, Zenodo), papers/chapters/books and patents/copyright, plus year filter and keyword search.
-- **Print / Save PDF** produces a formal black-on-white academic CV via an `@media print` stylesheet.
+- Static HTML, CSS and vanilla JavaScript served by GitHub Pages from `main`: no build step, no frameworks, no CDN (fonts are self-hosted in `assets/fonts/`).
+- **Interactive 3D research theatre** (`engine3d.js`, pure Canvas 2D projection): drag-to-orbit with inertia, pinch / Ctrl+wheel / ± zoom, keyboard control, and four modes: Radar Globe, Neural Lattice (animated signal pulses), Quantum Bloch (precessing state vector with trail) and EEG Wave 3D. Six clickable research nodes filter the publications archive. A perspective tactical grid and particle field sits behind the hero with pointer parallax.
+- 3D tilt with holographic sheen on the portrait, KPI tiles and tool cards, and a 3D flip showcase of eight flagship research pillars.
+- Publications archive (58 entries, 47 lead-author): clickable year / category / authorship / theme analytics that cross-filter the list, category pills, a lead-author toggle, year filter, keyword search, and one-click citation and BibTeX copy on every entry.
+- Command palette (Ctrl/⌘+K) for fuzzy search across sections, degrees, publications, patents and quick actions; tactical terminal console (`whoami`, `stats --all`, `ls patents`, `stack --ai`, `contact`, …).
+- Scroll-progress HUD, scroll-spy, scroll-reveal and count-up KPIs; every animation respects `prefers-reduced-motion`.
+- Education entries list each institution's accreditations and statutory recognitions, verified from official university, UGC/AIU and Government of India sources.
+- **Print / Save PDF** produces a formal black-on-white academic CV via `@media print` (3D canvases, terminal, palette and HUD controls are hidden).
 - SEO: meta description, Open Graph, Twitter card and JSON-LD `Person` schema, `sitemap.xml`, `robots.txt`.
 
 ## Files
@@ -16,9 +20,9 @@ Source for the academic CV website of **Rishabh Aryan**: AI/ML researcher, M.Tec
 |---|---|
 | `index.html` | The CV page (content and structured data) |
 | `style.css` | Theme, responsive layout and print stylesheet |
-| `app.js` | Theme toggle, mobile menu, publication filters and search |
-| `fx3d.js` | Canvas 3D lattice and tilt effects |
-| `assets/` | Portrait, favicon and agentic-tool logos |
+| `app.js` | Theme, HUD, reveal, publications engine, citations, command palette, terminal, flip cards |
+| `engine3d.js` | Self-contained 3D engine (four modes), background field and tilt effects |
+| `assets/` | Portrait, favicon, self-hosted fonts and agentic-tool logos |
 
 ## Other repositories by Rishabh Aryan
 
